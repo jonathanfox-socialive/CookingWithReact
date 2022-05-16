@@ -9,30 +9,40 @@ export const RecipeContext = React.createContext();
 const LOCAL_STORAGE_KEY = "cookingwithReact.recipes";
 
 function App() {
+  // use the react useState hook format to set a state variable named selectedRecipeId,
+  // a function to update the state variable (setSelectedRecipeId)
+  // and a default value of undefined
+
+  // state vairable name, function to updayte the state variable = useState(startingValue for the state variable)
+  const [selectedRecipeId, setSelectedRecipeId] = useState()
+
   const [recipes, setRecipes] = useState(sampleRecipes);
 
-  //useeffect is react built in magic, that lets us execute logic, when variable values change
+  //sets a variable named selectedRecipe that finds the entire recipe from the recipe list based
+  // on whatever selectedRecipeId is 
+  const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId)
 
-  // useEffect(() => {
-  //  the code to execute
-  //somefunction()
-  //()=>{}
-  // }, [the name of any variables that when changed should cause the above code to execute]);
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (recipeJSON != null) setRecipes(JSON.parse(recipeJSON));
   }, []);
 
-  //any time the recipes vairable updates, we resave
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes));
   }, [recipes]);
 
-  //adding our handleRecipeAdd, and handleRecipeDelete function into the context
-  //so that other components can access these functions directly
+
+
+  // function that calls our setSelectedRecipeId function
+  function handleRecipeSelect(id) {
+    //sets the selectedRecipeId state variable to whatever the id parameter is
+    setSelectedRecipeId(id)
+  }
+ 
   const recipeContextValue = {
     handleRecipeAdd,
     handleRecipeDelete,
+    handleRecipeSelect,
   };
 
   function handleRecipeAdd() {
@@ -55,10 +65,10 @@ function App() {
   }
 
   return (
-    // we have to wrap any components that want access to our context store with Recipe.Context provider
     <RecipeContext.Provider value={recipeContextValue}>
       <RecipeList recipes={recipes} />
-      <RecipeEdit />
+      {/* // pass in the sleecredrecipe vaierbLE TO RECIPEEDITR */}
+      {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>
   );
 }

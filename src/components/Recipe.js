@@ -6,14 +6,17 @@ export default function Recipe(props) {
   const { id, name, cookTime, servings, instructions, ingredients } = props;
 
   //reach into the React context and grap the  handleRecipeDelete function
-  const { handleRecipeDelete } = useContext(RecipeContext);
+  //reach into contect sotre to grabv thatr handleRecipeSelect function
+  const { handleRecipeDelete, handleRecipeSelect } = useContext(RecipeContext);
 
   return (
     <div className="recipe">
       <div className="recipe__header">
         <h3 className="recipe__title">{name}</h3>
         <div>
-          <button className="btn btn--primary mr-1">Edit</button>
+          <button className="btn btn--primary mr-1"  
+          //call it whenebver the edit button is clicked
+           onClick={() => handleRecipeSelect(id)}>Edit</button>
           <button
             className="btn btn--danger"
             onClick={() => handleRecipeDelete(id)}

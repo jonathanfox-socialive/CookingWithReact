@@ -3,6 +3,8 @@ import { RecipeContext } from "./App";
 import Recipe from "./Recipe";
 
 export default function RecipeList({ recipes }) {
+  
+  //reach into the context store to grap handleRecipeAdd function
   const { handleRecipeAdd } = useContext(RecipeContext);
 
   return (
